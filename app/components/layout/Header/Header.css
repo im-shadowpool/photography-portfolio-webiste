@@ -1,0 +1,13 @@
+/* .navbar_menu {
+    grid-column-gap: .5em;
+    grid-row-gap: .5em;
+    background-color: var(--_colors---swatch--white);
+    border-radius: 1em;
+    height: 3.5em;
+    padding: .5em;
+    display: flex;
+    position: absolute;
+    left: 50%;
+    overflow: hidden;
+    transform: translate(-50%);
+} */
