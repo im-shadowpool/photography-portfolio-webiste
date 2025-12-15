@@ -1,62 +1,67 @@
 .sticky-cards {
-    position: relative;
-    width: 100%;
-    height: 100%;
+  position: relative;
+  width: 100%;
+  height: 100%;
 }
 
 .sticky-card {
-    position: relative;
-    width: 100%;
-    min-height: 100svh;
+  position: relative;
+  width: 100%;
+  height: 90svh;
+  left: 0 !important;
 }
+.sticky-cards:not(:last-child){
+    margin-bottom: 4rem;
+}   
 
 .sticky-card::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(255, 255, 255, 0.5);
-    opacity: var(--after-opacity, 0);
-    transition: opacity 0.1s ease;
-    pointer-events: none;
-    z-index: 2;
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 1);
+  border-radius: 2rem;
+  opacity: var(--after-opacity, 0);
+  transition: opacity 0.1s ease;
+  pointer-events: none;
+  z-index: 2;
 }
 
 .sticky-card-header {
-    h2 {
-        font-size: 4rem;
-        line-height: 1.2em;
-        font-weight: 500;
-        letter-spacing: -0.05em;
-    }
+  h2 {
+    font-size: 4rem;
+    line-height: 1.2em;
+    font-weight: 500;
+    letter-spacing: -0.05em;
+  }
 }
 
 .sticky-card-footer {
-    h3 {
-        font-size: 1.625rem;
-        line-height: 1.2em;
-        font-weight: 500;
-        letter-spacing: -0.01em;
-    }
+  h3 {
+    font-size: 1.625rem;
+    line-height: 1.2em;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
 }
 
 .sticky-card-second {
-    span {
-        font-size: 6rem;
-        font-weight: 600;
-        line-height: 1.2em;
-        letter-spacing: -0.05em;
-        opacity: 0.1;
-        color: var(--foreground);
-    }
+  span {
+    font-size: 6rem;
+    font-weight: 600;
+    line-height: 1.2em;
+    letter-spacing: -0.05em;
+    opacity: 0.1;
+    color: var(--foreground);
+  }
 
-    img {
-        width: 100%;
-        height: auto;
-        border-radius: 1rem;
-        border: 4px solid;
-        border-color: var(--brandColor);
-    }
+  .sticky-card-image {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 100%;
+  }
 }

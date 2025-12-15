@@ -74,21 +74,29 @@ export default function StickyCards() {
             trigger: card,
             start: "top top",
             endTrigger: stickyCards[stickyCards.length - 1],
-            end: "top top",
+            end: "120%",
             pin: true,
             pinSpacing: false,
           });
         }
-        // if (index < stickyCards.length - 1){
-        //     ScrollTrigger.create({
-        //         trigger: stickyCards[index + 1],
-        //         start: "top bottom",
-        //         end: "top top",
-        //         onUpdate: (self) => {
-
-        //         }
-        //     })
-        // }
+        if (index < stickyCards.length - 1) {
+          ScrollTrigger.create({
+            trigger: stickyCards[index + 1],
+            start: "top bottom",
+            end: "top top",
+            onUpdate: (self) => {
+              const progress = self.progress;
+              const scale = 1 - progress * 0.25;
+              const rotation = (index % 2 === 0 ? 5 : -5) * progress;
+              const afterOpacity = progress - 0.25;
+              gsap.set(card, {
+                scale: scale,
+                rotation: rotation,
+                "--after-opacity": afterOpacity,
+              });
+            },
+          });
+        }
       });
     },
     { scope: stickyCardContainerRef }
@@ -114,7 +122,7 @@ export default function StickyCards() {
                 </span>
                 <h2>{card.title}</h2>
               </div>
-              <div className="sticky-card-footer flex flex-col gap-4 items-start max-w-[28rem]">
+              <div className="sticky-card-footer flex flex-col gap-4 items-start max-w-[448px]">
                 <h3>{card.contentTitle}</h3>
                 <p>{card.contentDesc}</p>
                 <Button content={card.buttonText} path={card.buttonPath} />
@@ -124,8 +132,7 @@ export default function StickyCards() {
               <div className="flex justify-end items-end gap-4">
                 <span>{`0${index + 1}`}</span>
               </div>
-              <div className="flex justify-end items-end border-rounded-md">
-                <img src={card.image} alt={card.title} />
+              <div className="sticky-card-image border-rounded-lg" style={{ backgroundImage: `url(${card.image})` }}>
               </div>
             </div>
           </div>
