@@ -3,6 +3,7 @@
 :root {
   --background: #faf4ec;
   --foreground: #161616;
+  --brandColor: #9e0099;
   --container-defualt: 1440px;
   --container-max: 1440px;
   --container-padding: 1.5rem;
@@ -18,6 +19,10 @@
     --foreground: #faf4ec;
   }
 } */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
 
 body {
   background: var(--background);
@@ -25,17 +30,53 @@ body {
   font-family: var(--font-rubik), Arial, Helvetica, sans-serif;
 }
 
-*   {
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+* {
   will-change: transform;
 }
 
 
-.border-rounded-md {
+.border-rounded-xs {
+  border-radius: .5rem;
+}
+
+.border-rounded-sm {
   border-radius: .8rem;
 }
 
-h1{
-    font-size: 6rem;
-    font-weight: 600;
-    line-height: 1.2em;
+.border-rounded-md {
+  border-radius: 1rem;
+}
+
+.border-rounded-lg {
+  border-radius: 1.5rem;
+}
+
+.border-rounded-xl {
+  border-radius: 2rem;
+}
+
+h1 {
+  font-size: 6rem;
+  font-weight: 600;
+  line-height: 1.2em;
+  letter-spacing: -0.05em;
+}
+
+.results-divider {
+  background-color: var(--foreground);
+  width: 100%;
+  height: 1px;
+}
+
+.video {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  position: absolute;
+  inset: 0%;
 }

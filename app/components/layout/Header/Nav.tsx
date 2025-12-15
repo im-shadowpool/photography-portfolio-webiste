@@ -7,7 +7,7 @@ const navItems = [
 
 export default function Nav() {
   return (
-    <nav className="navbar_menu flex absolute overflow-hidden left-1/2 -translate-x-1/2 bg-white p-2 gap-2 border-rounded-md">
+    <nav className="navbar_menu flex absolute overflow-hidden left-1/2 -translate-x-1/2 bg-white p-2 gap-2 border-rounded-sm">
       {navItems.map((item) => (
         <a
           key={item.href}

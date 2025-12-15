@@ -3,6 +3,7 @@ import { Rubik } from "next/font/google";
 import "./globals.css";
 import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
+import LenisGSAPProvider from "./providers/LenisGSAPProvider";
 
 const rubik = Rubik({
   variable: "--font-rubik",
@@ -22,9 +23,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${rubik.variable} antialiased`}>
-        <Header />
-        <main>{children}</main>
-        <Footer />
+        <LenisGSAPProvider>
+          <Header />
+          <main>{children}</main>
+          <Footer />
+        </LenisGSAPProvider>
       </body>
     </html>
   );
