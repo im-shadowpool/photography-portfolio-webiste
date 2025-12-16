@@ -3,6 +3,7 @@
 :root {
   --background: #faf4ec;
   --foreground: #161616;
+  --text-color: #404040;
   --brandColor: #9e0099;
   --container-defualt: 1440px;
   --container-max: 1440px;
@@ -66,6 +67,35 @@ h1 {
   letter-spacing: -0.05em;
 }
 
+h2 {
+  font-size: 4rem;
+  line-height: 1.2em;
+  font-weight: 600;
+  letter-spacing: -0.04em;
+}
+
+h2 {
+  font-size: 3rem;
+  line-height: 1.2em;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+h4 {
+  font-size: 1.25rem;
+  line-height: 1.2em;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+p,
+span,
+a {
+  font-size: 1rem;
+  line-height: 1.2em;
+  font-weight: 400;
+}
+
 .results-divider {
   background-color: var(--foreground);
   width: 100%;
@@ -79,4 +109,9 @@ h1 {
   padding: 0;
   position: absolute;
   inset: 0%;
+}
+
+.buttons-group {
+  display: flex;
+  gap: 1rem;
 }

@@ -10,9 +10,10 @@
   height: 90svh;
   left: 0 !important;
 }
-.sticky-cards:not(:last-child){
-    margin-bottom: 4rem;
-}   
+
+.sticky-cards>.sticky-card:not(:last-child) {
+  margin-block-end: 4rem;
+}
 
 .sticky-card::after {
   content: "";
