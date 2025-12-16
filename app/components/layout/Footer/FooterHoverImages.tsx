@@ -11,7 +11,7 @@ export default function FooterHoverImages() {
   const lastMousePosRef = useRef({ x: 0, y: 0 });
   const interpolatedMousePosRef = useRef({ x: 0, y: 0 });
   const isDesktopRef = useRef(false);
-  isDesktopRef.current = window.innerWidth > 1000;
+  isDesktopRef.current = window.innerWidth > 1024;
 
   useEffect(() => {
     const config = {

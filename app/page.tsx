@@ -52,7 +52,6 @@ export default function Home() {
         </div>
         {/* Sticky Cards */}
         <StickyCards />
-        {/*  */}
       </Container>
     </Section>
   );
