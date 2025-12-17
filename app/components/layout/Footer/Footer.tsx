@@ -1,10 +1,26 @@
+"use client";
+
 import Container from "@/app/components/ui/Container";
 import Section from "../../ui/Section";
 import Button from "../../ui/Button";
 import "./Footer.css";
 import FooterHoverImages from "./FooterHoverImages";
+import { usePathname } from "next/navigation";
 
 export default function Footer() {
+  const pathname = usePathname();
+  if (pathname.startsWith("/gallery"))
+    return (
+      <Container className="footer-gallery">
+        <p>© 2023 Rerom Spaces. All rights reserved.</p>
+        <div className="footer-gallery-links">
+          <a href="#">Home</a>
+          <a href="#">FAQ</a>
+          <a href="#">Contact</a>
+        </div>
+      </Container>
+    );
+
   return (
     <footer className="border-t border-neutral-200">
       {/* Pre Footer */}

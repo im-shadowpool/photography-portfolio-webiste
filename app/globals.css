@@ -4,6 +4,8 @@
   --background: #faf4ec;
   --foreground: #161616;
   --text-color: #404040;
+  --white: #ffffff;
+  --black: #000000;
   --brandColor: #9e0099;
   --container-defualt: 1440px;
   --container-max: 1440px;
@@ -74,7 +76,7 @@ h2 {
   letter-spacing: -0.04em;
 }
 
-h2 {
+h3 {
   font-size: 3rem;
   line-height: 1.2em;
   font-weight: 600;
@@ -91,6 +93,7 @@ h4 {
 p,
 span,
 a {
+  color: var(--text-color);
   font-size: 1rem;
   line-height: 1.2em;
   font-weight: 400;
@@ -114,4 +117,13 @@ a {
 .buttons-group {
   display: flex;
   gap: 1rem;
+}
+
+.subTitle {
+  padding: 10px 12px;
+  background: var(--white);
+  border-radius: .5rem;
+  color: var(--foreground);
+  font-size: .875rem;
+  font-weight: 400;
 }

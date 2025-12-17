@@ -92,6 +92,33 @@
     gap: 1rem;
 }
 
+/* Footer Gallery */
+.footer-gallery {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 10;
+    opacity: 1;
+    padding: 1rem 1.5rem;
+
+    p {
+        color: var(--text-color);
+        font-size: .875rem
+    }
+}
+
+.footer-gallery-links {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    align-items: center;
+    justify-content: center;
+}
+
 /* Footer Hover Images */
 .footer-hover-container {
     position: absolute;

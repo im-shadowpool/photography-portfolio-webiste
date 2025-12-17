@@ -1,7 +1,9 @@
 const navItems = [
   { label: "Home", href: "/" },
-  { label: "Work", href: "/work" },
   { label: "About", href: "/about" },
+  { label: "Services", href: "/services" },
+  { label: "Gallery", href: "/gallery" },
+  // { label: "FAQs", href: "/faqs" },
   { label: "Contact", href: "/contact" },
 ];
 
