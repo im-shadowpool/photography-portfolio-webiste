@@ -17,7 +17,7 @@
     flex-shrink: 0;
     width: 350px;
     height: 500px;
-    margin: 0 4px;
+    margin: 0 6px;
     position: relative;
     top: 50%;
     transform: translateY(-50%);
@@ -39,7 +39,7 @@
     height: 100%;
     object-fit: cover;
     will-change: transform;
-    transform: scale(2);
+    transform: scale(2.25);
     user-select: none;
 }
 
@@ -73,7 +73,7 @@
 }
 
 .project-arrow svg {
-    stroke: #000;
+    stroke: var(--foreground);
     stroke-width: 2;
 }
 
@@ -85,8 +85,5 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    pointer-events: none;
     z-index: 10;
-    transition: opacity 0.3s ease;
-    opacity: 0;
 }

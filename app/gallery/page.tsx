@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { galleryData } from "@/app/lib/data/galleryData";
-import styles from "./Gallery.module.css";
+import "./gallery.css";
 
 const Gallery = () => {
   const sliderRef = useRef(null);
@@ -42,7 +42,7 @@ const Gallery = () => {
 
     function createSlideElement(index) {
       const slide = document.createElement("div");
-      slide.className = styles["slide"];
+      slide.className = "slide";
 
       if (state.isMobile) {
         slide.style.width = "11rem";
@@ -50,7 +50,7 @@ const Gallery = () => {
       }
 
       const imageContainer = document.createElement("div");
-      imageContainer.className = styles["slide-image"];
+      imageContainer.className = "slide-image";
 
       const img = document.createElement("img");
       const dataIndex = index % totalSlideCount;
@@ -58,14 +58,14 @@ const Gallery = () => {
       img.alt = galleryData[dataIndex].title;
 
       const overlay = document.createElement("div");
-      overlay.className = styles["slide-overlay"];
+      overlay.className = "slide-overlay";
 
       const title = document.createElement("p");
-      title.className = styles["project-title"];
+      title.className = "project-title";
       title.textContent = galleryData[dataIndex].title;
 
       const arrow = document.createElement("div");
-      arrow.className = styles["project-arrow"];
+      arrow.className = "project-arrow";
       arrow.innerHTML = `
         <svg viewBox="0 0 24 24">
           <path d="M7 17L17 7M17 7H7M17 7V17"/>
@@ -89,16 +89,14 @@ const Gallery = () => {
     }
 
     function initializeSlides() {
-      const track = sliderRef.current?.querySelector(
-        `.${styles["slide-track"]}`
-      );
+      const track = sliderRef.current?.querySelector(".slide-track");
       if (!track) return;
 
       track.innerHTML = "";
       state.slides = [];
 
       checkMobile();
-      state.slideWidth = state.isMobile ? 215 : 390;
+      state.slideWidth = state.isMobile ? 215 : 368;
 
       const copies = 6;
       const totalSlides = totalSlideCount * copies;
@@ -115,9 +113,7 @@ const Gallery = () => {
     }
 
     function updateSlidePositions() {
-      const track = sliderRef.current?.querySelector(
-        `.${styles["slide-track"]}`
-      );
+      const track = sliderRef.current?.querySelector(".slide-track");
       if (!track) return;
 
       const sequenceWidth = state.slideWidth * totalSlideCount;
@@ -309,11 +305,9 @@ const Gallery = () => {
   }, [router]);
 
   return (
-    <>
-      <div className={styles.slider} ref={sliderRef}>
-        <div className={styles["slide-track"]}></div>
-      </div>
-    </>
+    <div className="slider" ref={sliderRef}>
+      <div className="slide-track"></div>
+    </div>
   );
 };
 
