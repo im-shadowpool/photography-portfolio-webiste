@@ -132,8 +132,10 @@ export default function StickyCards() {
               <div className="flex justify-end items-end gap-4">
                 <span>{`0${index + 1}`}</span>
               </div>
-              <div className="sticky-card-image border-rounded-lg" style={{ backgroundImage: `url(${card.image})` }}>
-              </div>
+              <div
+                className="sticky-card-image border-rounded-lg"
+                style={{ backgroundImage: `url(${card.image})` }}
+              ></div>
             </div>
           </div>
         );
