@@ -1,0 +1,107 @@
+.page-hero {
+    position: relative;
+}
+
+.page-hero-container {
+    position: relative;
+    height: 85vh;
+    min-height: 520px;
+    max-height: 950px;
+    overflow: hidden;
+}
+
+/* Video wrapper */
+.video-wrapper {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+}
+
+/* Video */
+.bg-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+/* Dark overlay for text readability */
+.video-overlay {
+    position: absolute;
+    inset: 0;
+    background: #000000;
+    background: linear-gradient(20deg, rgba(0, 0, 0, 1) 0%, rgba(255, 255, 255, 0) 100%);
+}
+
+
+.pageTitle {
+    position: relative;
+    z-index: 1;
+    height: 100%;
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+}
+
+.pageTitle-content {
+    max-width: 45rem;
+    color: var(--white);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+
+    p {
+        color: var(--text-white-color);
+        max-width: 35rem;
+
+    }
+}
+
+.pageTitle-box {
+    /* width: 16rem;
+    height: 15rem; */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: end;
+    padding: 1rem;
+    border-radius: 1rem 1rem 0 0;
+    background-color: var(--background);
+    clip-path: path('M 20,0 L 480, 0 A 500, 20 L 500,200 L 480, 220 L 350,220 L 330,240 L 330,280 L 310,300 L 20,300 L 0, 280 L 0,20 L 20,0 Z');
+}
+
+.pageTitle-social-container {
+    display: flex;
+    flex-direction: row;
+    gap: .5rem;
+
+    a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 2.5rem;
+        height: 2.5rem;
+        background-color: var(--background);
+        border-radius: 100px;
+        scale: 1;
+        transition: scale 0.4s var(--bouncingTranstion);
+
+        svg {
+            width: 1.5rem;
+            height: 1.5rem;
+
+            path {
+                stroke: var(--foreground);
+
+
+            }
+        }
+
+        &:hover {
+
+            scale: 1.1;
+
+        }
+    }
+}

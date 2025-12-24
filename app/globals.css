@@ -4,12 +4,14 @@
   --background: #faf4ec;
   --foreground: #161616;
   --text-color: #404040;
+  --text-white-color: #c3c3c3;
   --white: #ffffff;
   --black: #000000;
   --brandColor: #9e0099;
   --container-defualt: 1440px;
-  --container-max: 1440px;
+  --container-max: 1920px;
   --container-padding: 1.5rem;
+  --container-padding-sm: 0.5rem;
   --bouncingTranstion: cubic-bezier(0.34, 2.27, 0.64, 1);
 }
 
@@ -97,6 +99,13 @@ a {
   font-size: 1rem;
   line-height: 1.2em;
   font-weight: 400;
+}
+
+h1.h1-page-title {
+  font-size: 4rem;
+  line-height: 1.2em;
+  font-weight: 600;
+  letter-spacing: -0.04em;
 }
 
 .results-divider {
