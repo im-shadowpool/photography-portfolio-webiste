@@ -22,7 +22,7 @@ export default function Home() {
         <ResultsCards />
         {/* About Section */}
         <div className="about-section py-24 flex flex-col gap-16">
-          <h2 className="w-[58rem]">
+          <h2 className="w-[58rem] sectionH2Title">
             Wij maken content die opvalt. Die blijft hangen. Die jouw doelgroep
             raakt en jouw merk in beweging brengt. Snel, krachtig en energiek.
           </h2>
@@ -36,7 +36,7 @@ export default function Home() {
             />
             <div className="flex-1/2 flex gap-6 justify-center">
               <div className="flex flex-col gap-6 items-start justify-between w-[30rem]">
-                <p>
+                <p className="sectionH2Desc">
                   We stoppen niet bij mooie plaatjes en vette beelden. We maken
                   het meetbaar. Zo weet je precies wat werkt en wat niet. Nooit
                   meer content zonder strategie. Nooit meer content zonder
