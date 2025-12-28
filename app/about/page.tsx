@@ -3,6 +3,9 @@ import Button from "../components/ui/Button";
 import Container from "../components/ui/Container";
 import Section from "../components/ui/Section";
 import "./About.css";
+import ImageTelescope from "../components/layout/ImageTelescope/ImageTelescope";
+import CardFan from "../components/layout/CardFan/CardFan";
+import FilmTestimonials from "../components/layout/Testimonials/Testimonials";
 
 export default function AboutPage() {
   return (
@@ -188,55 +191,61 @@ export default function AboutPage() {
               </div>
             </div>
             <div className="ourStoryQuote">
-             "We believe the best photographs are not staged—they’re felt."
+              "We believe the best photographs are not staged—they’re felt."
             </div>
             <div className="flex gap-6">
               <div className="flex gap-3 items-center outStoryStatsItem">
                 <div className="flex justify-center items-center rounded-full bg-(--white) w-12 h-12">
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
-    fill="none"
-    strokeWidth="1.5"
-    color="var(--brandColor)"
-    viewBox="0 0 24 24"
-  >
-    <path
-      stroke="var(--brandColor)"
-      strokeLinejoin="round"
-      d="M22 8.862a5.95 5.95 0 0 1-1.654 4.13c-2.441 2.531-4.809 5.17-7.34 7.608-.581.55-1.502.53-2.057-.045l-7.295-7.562c-2.205-2.286-2.205-5.976 0-8.261a5.58 5.58 0 0 1 8.08 0l.266.274.265-.274A5.61 5.61 0 0 1 16.305 3c1.52 0 2.973.624 4.04 1.732A5.95 5.95 0 0 1 22 8.862Z"
-    ></path>
-  </svg>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    fill="none"
+                    strokeWidth="1.5"
+                    color="var(--brandColor)"
+                    viewBox="0 0 24 24">
+                    <path
+                      stroke="var(--brandColor)"
+                      strokeLinejoin="round"
+                      d="M22 8.862a5.95 5.95 0 0 1-1.654 4.13c-2.441 2.531-4.809 5.17-7.34 7.608-.581.55-1.502.53-2.057-.045l-7.295-7.562c-2.205-2.286-2.205-5.976 0-8.261a5.58 5.58 0 0 1 8.08 0l.266.274.265-.274A5.61 5.61 0 0 1 16.305 3c1.52 0 2.973.624 4.04 1.732A5.95 5.95 0 0 1 22 8.862Z"></path>
+                  </svg>
                 </div>
                 <div className="flex flex-col gap-1">
-                  <p className=""><b>500+ Weddings</b></p>
+                  <p className="">
+                    <b>500+ Weddings</b>
+                  </p>
                   <p className="">Captured WorldWide</p>
                 </div>
               </div>
               <div className="flex gap-3 items-center outStoryStatsItem">
                 <div className="flex justify-center items-center rounded-full bg-(--white) w-12 h-12">
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
-    fill="none"
-    viewBox="0 0 24 24"
-  >
-    <path
-      stroke="var(--brandColor)"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="1.5"
-      d="M8.5 14v8l3.818-3 3.182 3v-8m3-5.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0"
-    ></path>
-  </svg>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    fill="none"
+                    viewBox="0 0 24 24">
+                    <path
+                      stroke="var(--brandColor)"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="1.5"
+                      d="M8.5 14v8l3.818-3 3.182 3v-8m3-5.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0"></path>
+                  </svg>
                 </div>
                 <div className="flex flex-col gap-1">
-                  <p className=""><b>Award Winning</b></p>
+                  <p className="">
+                    <b>Award Winning</b>
+                  </p>
                   <p className="">Recognised Exxcellence</p>
                 </div>
               </div>
+            </div>
+            <div className="w-full bg-(--text-white-color) h-px"></div>
+            <div>
+              <Button content="Start your journey" path="/contact"/>
+              {/* Signature */}
+              
             </div>
           </div>
           <div className="w-1/2">
@@ -250,6 +259,11 @@ export default function AboutPage() {
           </div>
         </Container>
       </Section>
+
+              <ImageTelescope />
+
+       <FilmTestimonials />
+
     </>
   );
 }

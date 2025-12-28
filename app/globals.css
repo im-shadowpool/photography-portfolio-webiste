@@ -38,10 +38,10 @@ body {
 .lenis.lenis-smooth {
   scroll-behavior: auto !important;
 }
-
+/* 
 * {
   will-change: transform;
-}
+} */
 
 .border-rounded-xs {
   border-radius: 0.5rem;

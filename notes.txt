@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@900&family=Space+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --silver: #e0e0e0;
+            --film-black: #141414;
+            --safety-red: #ff3300;
+            --grain-opacity: 0.07;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--silver);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Perforated Film Grain Overlay */
+        .grain-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 999;
+            opacity: var(--grain-opacity);
+        }
+
+        .testimonial-section {
+            padding: 100px 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .section-header {
+            padding: 0 5vw;
+            margin-bottom: 60px;
+        }
+
+        .section-header h2 {
+            font-size: clamp(3rem, 10vw, 8rem);
+            text-transform: uppercase;
+            line-height: 0.85;
+            letter-spacing: -0.05em;
+            color: var(--silver);
+        }
+
+        .section-header .sub {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--safety-red);
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            display: block;
+            margin-bottom: 1rem;
+        }
+
+        /* The Film Strip */
+        .film-strip-container {
+            width: 100%;
+            overflow: hidden;
+            padding: 40px 0;
+            cursor: grab;
+        }
+
+        .film-strip-track {
+            display: flex;
+            gap: 20px;
+            padding-left: 5vw;
+            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .film-frame {
+            flex: 0 0 600px;
+            background: var(--film-black);
+            aspect-ratio: 1.4 / 1;
+            position: relative;
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border-left: 1px solid #333;
+            border-right: 1px solid #333;
+            transition: all 0.4s ease;
+        }
+
+        /* Film Perforations */
+        .film-frame::before, .film-frame::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 30px;
+            background-image: radial-gradient(circle, var(--bg) 40%, transparent 45%);
+            background-size: 40px 40px;
+            background-position: center;
+        }
+
+        .film-frame::before { top: 10px; }
+        .film-frame::after { bottom: 10px; }
+
+        .film-frame:hover {
+            background: #1a1a1a;
+            transform: translateY(-10px);
+        }
+
+        .frame-meta {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            color: #555;
+            display: flex;
+            justify-content: space-between;
+            text-transform: uppercase;
+        }
+
+        .frame-meta .frame-num {
+            color: var(--safety-red);
+        }
+
+        .testimonial-text {
+            font-size: 1.8rem;
+            line-height: 1.3;
+            font-weight: 500;
+            letter-spacing: -0.02em;
+            color: var(--silver);
+            margin: 40px 0;
+        }
+
+        .client-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .client-info .name {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .client-info .role {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            opacity: 0.5;
+            text-transform: uppercase;
+        }
+
+        /* Scrubber Navigation */
+        .controls {
+            padding: 40px 5vw;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .scrubber {
+            flex-grow: 1;
+            height: 2px;
+            background: #333;
+            position: relative;
+        }
+
+        .scrubber-handle {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100px;
+            height: 4px;
+            background: var(--safety-red);
+            transform: translateY(-50%);
+            transition: left 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .film-frame {
+                flex: 0 0 85vw;
+                padding: 40px 30px;
+            }
+            .testimonial-text {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <svg class="grain-overlay" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <filter id="noiseFilter">
+            <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/>
+        </filter>
+        <rect width="100%" height="100%" filter="url(#noiseFilter)"/>
+    </svg>
+
+    <section class="testimonial-section">
+        <div class="section-header">
+            <span class="sub">Negative Sequence // 001-004</span>
+            <h2>Silver<br>Halide<br>Voices.</h2>
+        </div>
+
+        <div class="film-strip-container" id="stripContainer">
+            <div class="film-strip-track" id="stripTrack">
+                
+                <!-- Frame 01 -->
+                <div class="film-frame">
+                    <div class="frame-meta">
+                        <span>ISO 400 / 35MM</span>
+                        <span class="frame-num">EXP 01</span>
+                    </div>
+                    <blockquote class="testimonial-text">
+                        "The way light is captured here isn't just technical—it's visceral. A master of the gelatin-silver aesthetic in a digital world."
+                    </blockquote>
+                    <div class="client-info">
+                        <span class="name">ELARA VANCE</span>
+                        <span class="role">Creative Director</span>
+                    </div>
+                </div>
+
+                <!-- Frame 02 -->
+                <div class="film-frame">
+                    <div class="frame-meta">
+                        <span>F/2.8 / 1/250</span>
+                        <span class="frame-num">EXP 02</span>
+                    </div>
+                    <blockquote class="testimonial-text">
+                        "Rarely do you find a photographer who understands the gravity of shadows. These frames feel like found artifacts."
+                    </blockquote>
+                    <div class="client-info">
+                        <span class="name">JULIAN MORO</span>
+                        <span class="role">Gallerist</span>
+                    </div>
+                </div>
+
+                <!-- Frame 03 -->
+                <div class="film-frame">
+                    <div class="frame-meta">
+                        <span>ISO 100 / PAN-X</span>
+                        <span class="frame-num">EXP 03</span>
+                    </div>
+                    <blockquote class="testimonial-text">
+                        "Every sequence tells a story that words fail to articulate. The texture of the grain brings an unmatched depth to our campaign."
+                    </blockquote>
+                    <div class="client-info">
+                        <span class="name">MARCUS REED</span>
+                        <span class="role">Fashion Lead</span>
+                    </div>
+                </div>
+
+                <!-- Frame 04 -->
+                <div class="film-frame">
+                    <div class="frame-meta">
+                        <span>T-MAX / DEVELOPED</span>
+                        <span class="frame-num">EXP 04</span>
+                    </div>
+                    <blockquote class="testimonial-text">
+                        "In an era of disposable imagery, these portraits carry the weight of permanence. Truly exceptional eye for composition."
+                    </blockquote>
+                    <div class="client-info">
+                        <span class="name">SARA JENKINS</span>
+                        <span class="role">Visual Editor</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="controls">
+            <div class="scrubber">
+                <div class="scrubber-handle" id="handle"></div>
+            </div>
+            <div style="font-family: 'Space Mono'; font-size: 0.7rem; letter-spacing: 2px;">
+                SCROLL TO ADVANCE
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const track = document.getElementById('stripTrack');
+        const container = document.getElementById('stripContainer');
+        const handle = document.getElementById('handle');
+        
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+
+        container.addEventListener('mousedown', (e) => {
+            isDown = true;
+            startX = e.pageX - container.offsetLeft;
+            scrollLeft = container.scrollLeft;
+            container.style.cursor = 'grabbing';
+        });
+
+        container.addEventListener('mouseleave', () => {
+            isDown = false;
+            container.style.cursor = 'grab';
+        });
+
+        container.addEventListener('mouseup', () => {
+            isDown = false;
+            container.style.cursor = 'grab';
+        });
+
+        container.addEventListener('mousemove', (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - container.offsetLeft;
+            const walk = (x - startX) * 2;
+            container.scrollLeft = scrollLeft - walk;
+            updateScrubber();
+        });
+
+        // Wheel horizontal scroll
+        container.addEventListener('wheel', (e) => {
+            if (e.deltaY !== 0) {
+                e.preventDefault();
+                container.scrollLeft += e.deltaY;
+                updateScrubber();
+            }
+        });
+
+        function updateScrubber() {
+            const maxScroll = container.scrollWidth - container.clientWidth;
+            const scrollPercentage = (container.scrollLeft / maxScroll) * 100;
+            handle.style.left = `${Math.min(Math.max(scrollPercentage, 0), 90)}%`;
+        }
+
+        // Entrance Animation
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const frames = entry.target.querySelectorAll('.film-frame');
+                    frames.forEach((frame, index) => {
+                        setTimeout(() => {
+                            frame.style.opacity = '1';
+                            frame.style.transform = 'translateX(0)';
+                        }, index * 150);
+                    });
+                }
+            });
+        }, observerOptions);
+
+        observer.observe(container);
+
+        // Set initial state for animation
+        document.querySelectorAll('.film-frame').forEach(f => {
+            f.style.opacity = '0';
+            f.style.transform = 'translateX(50px)';
+            f.style.transition = 'all 0.8s cubic-bezier(0.23, 1, 0.32, 1)';
+        });
+    </script>
+</body>
+</html>

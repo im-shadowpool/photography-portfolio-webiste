@@ -8,7 +8,6 @@
   position: relative;
   width: 100%;
   height: 90svh;
-  left: 0 !important;
 }
 
 .sticky-cards>.sticky-card:not(:last-child) {

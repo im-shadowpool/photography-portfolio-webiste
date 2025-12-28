@@ -1,0 +1,36 @@
+.card-fan:hover .fan-item {
+  transform: translateX(0) rotate(0) scale(1) !important;
+  margin: 0 1rem;
+  z-index: 10;
+}
+
+.fan-item {
+  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.fan-item:nth-child(1) {
+  transform: rotate(-6deg) translateY(20px) translateX(20px);
+  z-index: 1;
+}
+
+.fan-item:nth-child(2) {
+  transform: rotate(-3deg) translateX(-10px);
+  z-index: 2;
+}
+
+.fan-item:nth-child(3) {
+  transform: rotate(2deg) translateY(15px) translateX(-40px);
+  z-index: 3;
+}
+
+.fan-item:nth-child(4) {
+  transform: rotate(6deg) translateY(5px) translateX(-70px);
+  z-index: 4;
+}
+
+@media (max-width: 1024px) {
+  .fan-item {
+    transform: none !important;
+    margin-bottom: 2rem;
+  }
+}
