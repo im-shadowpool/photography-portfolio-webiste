@@ -215,11 +215,11 @@ const Slider: React.FC = () => {
       <div
         ref={cursorRef}
         id="custom-cursor"
-        className={`fixed top-0 left-0 z-[100] w-18 h-18 -ml-12 -mt-12 border border-black/10 bg-black/5 backdrop-blur-md rounded-full flex flex-col items-center justify-center pointer-events-none transition-opacity duration-500 ${
+        className={`${styles.customCursor} fixed top-0 left-0 z-[100] w-18 h-18 -ml-12 -mt-12 border border-black/10 bg-black/5 backdrop-blur-md rounded-full flex flex-col items-center justify-center pointer-events-none transition-opacity duration-500 ${
           isHoveringCards ? "opacity-100" : "opacity-0 scale-0"
         } hidden lg:flex`}
       >
-        <span className="teimonialsDragText">
+        <span className={styles.teimonialsDragText}>
           {isDragging ? "Slide" : "Drag"}
         </span>
         <div className="flex gap-1 mt-1">
@@ -243,7 +243,7 @@ const Slider: React.FC = () => {
         }}
         onMouseEnter={() => setIsHoveringCards(true)}
         className={`
-          flex gap-10 md:gap-16 px-[24px] md:px-[15vw] lg:px-[20vw] overflow-x-auto no-scrollbar
+          flex gap-10 md:gap-16 px-[24px] md:px-[15vw] lg:px-[20vw] overflow-x-auto ${styles.noScrollbar}
           ${isHoveringCards ? "cursor-none" : ""}
         `}
         style={{

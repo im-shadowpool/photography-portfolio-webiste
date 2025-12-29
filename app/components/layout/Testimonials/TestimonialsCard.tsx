@@ -3,6 +3,7 @@
 import React, { useRef, useState, useCallback } from "react";
 import { Icons } from "./constants";
 import Button from "../../ui/Button";
+import styles from "./Testimonials.module.css";
 
 export interface Testimonial {
   id: number;
@@ -82,12 +83,12 @@ const GlareCard: React.FC<GlareCardProps> = ({ testimonial, isActive }) => {
       <div className="absolute top-5 left-1/2 -translate-x-1/2 flex gap-8 items-center pointer-events-none">
         <div className="flex items-center gap-2">
           <div className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
-          <span className="font-mono cameraMetaBarTop">REC</span>
+          <span className={`font-mono ${styles.cameraMetaBarTop}`}>REC</span>
         </div>
         <div className="h-2 w-px bg-white/10" />
-        <span className="font-mono cameraMetaBarTop">Mode M</span>
+        <span className={`font-mono ${styles.cameraMetaBarTop}`}>Mode M</span>
         <div className="h-2 w-px bg-white/10" />
-        <span className="font-mono cameraMetaBarTop">
+        <span className={`font-mono ${styles.cameraMetaBarTop}`}>
           {testimonial.metadata.lens}
         </span>
       </div>
@@ -105,7 +106,7 @@ const GlareCard: React.FC<GlareCardProps> = ({ testimonial, isActive }) => {
         <div className="mb-4">
           <Icons.Quote />
         </div>
-        <p className="font-serif max-w-[98%] testimonialQuote">
+        <p className={`font-serif max-w-[98%] ${styles.testimonialQuote}`}>
           {testimonial.quote}
         </p>
       </div>
@@ -121,7 +122,7 @@ const GlareCard: React.FC<GlareCardProps> = ({ testimonial, isActive }) => {
                 className="w-10 h-10 md:w-11 md:h-11 rounded-full object-cover"
               />
             </div>
-            <div className="testimonialAuthorInfo flex flex-col gap-2">
+            <div className={`${styles.testimonialAuthorInfo} flex flex-col gap-2`}>
               <h4>{testimonial.author}</h4>
               <div className="flex items-center gap-2">
                 <Icons.Camera />
@@ -136,18 +137,18 @@ const GlareCard: React.FC<GlareCardProps> = ({ testimonial, isActive }) => {
         {/* Exposure Metadata Row */}
         <div className="absolute bottom-5 left-1/2 -translate-x-1/2  flex justify-center gap-12  text-[9px] font-mono tracking-[0.3em] text-white/20 uppercase">
           <div className="flex items-center gap-4">
-            <span className="cameraMetaBarTop">ISO</span>
-            <span className="cameraMetaBarTop">{testimonial.metadata.iso}</span>
+            <span className={`font-mono ${styles.cameraMetaBarTop}`}>ISO</span>
+            <span className={`font-mono ${styles.cameraMetaBarTop}`}>{testimonial.metadata.iso}</span>
           </div>
           <div className="flex items-center gap-4">
-            <span className="cameraMetaBarTop">Speed</span>
-            <span className="cameraMetaBarTop">
+            <span className={`font-mono ${styles.cameraMetaBarTop}`}>Speed</span>
+            <span className={`font-mono ${styles.cameraMetaBarTop}`}>
               {testimonial.metadata.shutter}
             </span>
           </div>
           <div className="flex items-center gap-4">
-            <span className="cameraMetaBarTop">Aperture</span>
-            <span className="cameraMetaBarTop">
+            <span className={`font-mono ${styles.cameraMetaBarTop}`}>Aperture</span>
+            <span className={`font-mono ${styles.cameraMetaBarTop}`}>
               {testimonial.metadata.aperture}
             </span>
           </div>

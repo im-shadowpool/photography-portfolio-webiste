@@ -1,18 +1,13 @@
-.no-scrollbar::-webkit-scrollbar {
+.noScrollbar::-webkit-scrollbar {
     display: none;
 }
 
-.no-scrollbar {
+.noScrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
 
-::selection {
-    background: var(--brandColor);
-    color: #0a0a0a;
-}
-
-#custom-cursor {
+.customCursor {
     will-change: transform;
     pointer-events: none;
 }
@@ -44,7 +39,7 @@
         line-height: 0em;
         font-weight: 400;
     }
-}
+}   
 
 .teimonialsDragText {
     color: var(--foreground);
