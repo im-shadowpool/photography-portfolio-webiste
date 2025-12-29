@@ -1,0 +1,55 @@
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+::selection {
+    background: var(--brandColor);
+    color: #0a0a0a;
+}
+
+#custom-cursor {
+    will-change: transform;
+    pointer-events: none;
+}
+
+.cameraMetaBarTop {
+    color: #898989;
+    font-size: 0.8rem;
+    line-height: 1.2em;
+    font-weight: 400;
+}
+
+.testimonialQuote {
+    font-size: 1.75rem;
+    line-height: 1.2em;
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    font-style: italic;
+}
+
+.testimonialAuthorInfo {
+    h4 {
+        font-size: 1rem;
+        line-height: 1.2em;
+        font-weight: 400;
+    }
+
+    span {
+        font-size: 0.8rem;
+        line-height: 0em;
+        font-weight: 400;
+    }
+}
+
+.teimonialsDragText {
+    color: var(--foreground);
+    font-size: 0.8rem;
+    line-height: 1.2em;
+    font-weight: 400;
+    text-transform: uppercase;
+}

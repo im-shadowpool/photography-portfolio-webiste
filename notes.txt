@@ -1,370 +1,274 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@900&family=Space+Mono&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg: #0a0a0a;
-            --silver: #e0e0e0;
-            --film-black: #141414;
-            --safety-red: #ff3300;
-            --grain-opacity: 0.07;
-        }
+import Image from "next/image";
+import Button from "../components/ui/Button";
+import Container from "../components/ui/Container";
+import Section from "../components/ui/Section";
+import "./About.css";
+import ImageTelescope from "../components/layout/ImageTelescope/ImageTelescope";
+import CardFan from "../components/layout/CardFan/CardFan";
+import FilmTestimonials from "../components/layout/Testimonials/Testimonials";
+import Slider from "../components/layout/Testimonials/Testimonials";
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+export default function AboutPage() {
+  return (
+    <>
+      <Section className="page-hero px-(--container-padding-sm) pb-0">
+        <Container
+          className="page-hero-container border-rounded-md"
+          size="wide"
+        >
+          <div className="video-wrapper">
+            <video
+              className="bg-video"
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="metadata"
+            >
+              <source
+                src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4"
+                type="video/mp4"
+              />
+            </video>
 
-        body {
-            background-color: var(--bg);
-            color: var(--silver);
-            font-family: 'Inter', sans-serif;
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        /* Perforated Film Grain Overlay */
-        .grain-overlay {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            pointer-events: none;
-            z-index: 999;
-            opacity: var(--grain-opacity);
-        }
-
-        .testimonial-section {
-            padding: 100px 0;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .section-header {
-            padding: 0 5vw;
-            margin-bottom: 60px;
-        }
-
-        .section-header h2 {
-            font-size: clamp(3rem, 10vw, 8rem);
-            text-transform: uppercase;
-            line-height: 0.85;
-            letter-spacing: -0.05em;
-            color: var(--silver);
-        }
-
-        .section-header .sub {
-            font-family: 'Space Mono', monospace;
-            font-size: 0.9rem;
-            color: var(--safety-red);
-            text-transform: uppercase;
-            letter-spacing: 0.3em;
-            display: block;
-            margin-bottom: 1rem;
-        }
-
-        /* The Film Strip */
-        .film-strip-container {
-            width: 100%;
-            overflow: hidden;
-            padding: 40px 0;
-            cursor: grab;
-        }
-
-        .film-strip-track {
-            display: flex;
-            gap: 20px;
-            padding-left: 5vw;
-            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-        }
-
-        .film-frame {
-            flex: 0 0 600px;
-            background: var(--film-black);
-            aspect-ratio: 1.4 / 1;
-            position: relative;
-            padding: 60px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            border-left: 1px solid #333;
-            border-right: 1px solid #333;
-            transition: all 0.4s ease;
-        }
-
-        /* Film Perforations */
-        .film-frame::before, .film-frame::after {
-            content: "";
-            position: absolute;
-            left: 0;
-            width: 100%;
-            height: 30px;
-            background-image: radial-gradient(circle, var(--bg) 40%, transparent 45%);
-            background-size: 40px 40px;
-            background-position: center;
-        }
-
-        .film-frame::before { top: 10px; }
-        .film-frame::after { bottom: 10px; }
-
-        .film-frame:hover {
-            background: #1a1a1a;
-            transform: translateY(-10px);
-        }
-
-        .frame-meta {
-            font-family: 'Space Mono', monospace;
-            font-size: 0.75rem;
-            color: #555;
-            display: flex;
-            justify-content: space-between;
-            text-transform: uppercase;
-        }
-
-        .frame-meta .frame-num {
-            color: var(--safety-red);
-        }
-
-        .testimonial-text {
-            font-size: 1.8rem;
-            line-height: 1.3;
-            font-weight: 500;
-            letter-spacing: -0.02em;
-            color: var(--silver);
-            margin: 40px 0;
-        }
-
-        .client-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .client-info .name {
-            font-family: 'Space Mono', monospace;
-            font-size: 0.9rem;
-            font-weight: bold;
-        }
-
-        .client-info .role {
-            font-family: 'Space Mono', monospace;
-            font-size: 0.7rem;
-            opacity: 0.5;
-            text-transform: uppercase;
-        }
-
-        /* Scrubber Navigation */
-        .controls {
-            padding: 40px 5vw;
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .scrubber {
-            flex-grow: 1;
-            height: 2px;
-            background: #333;
-            position: relative;
-        }
-
-        .scrubber-handle {
-            position: absolute;
-            top: 50%;
-            left: 0;
-            width: 100px;
-            height: 4px;
-            background: var(--safety-red);
-            transform: translateY(-50%);
-            transition: left 0.3s ease;
-        }
-
-        @media (max-width: 768px) {
-            .film-frame {
-                flex: 0 0 85vw;
-                padding: 40px 30px;
-            }
-            .testimonial-text {
-                font-size: 1.2rem;
-            }
-        }
-    </style>
-</head>
-<body>
-
-    <svg class="grain-overlay" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-        <filter id="noiseFilter">
-            <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/>
-        </filter>
-        <rect width="100%" height="100%" filter="url(#noiseFilter)"/>
-    </svg>
-
-    <section class="testimonial-section">
-        <div class="section-header">
-            <span class="sub">Negative Sequence // 001-004</span>
-            <h2>Silver<br>Halide<br>Voices.</h2>
-        </div>
-
-        <div class="film-strip-container" id="stripContainer">
-            <div class="film-strip-track" id="stripTrack">
-                
-                <!-- Frame 01 -->
-                <div class="film-frame">
-                    <div class="frame-meta">
-                        <span>ISO 400 / 35MM</span>
-                        <span class="frame-num">EXP 01</span>
-                    </div>
-                    <blockquote class="testimonial-text">
-                        "The way light is captured here isn't just technical—it's visceral. A master of the gelatin-silver aesthetic in a digital world."
-                    </blockquote>
-                    <div class="client-info">
-                        <span class="name">ELARA VANCE</span>
-                        <span class="role">Creative Director</span>
-                    </div>
-                </div>
-
-                <!-- Frame 02 -->
-                <div class="film-frame">
-                    <div class="frame-meta">
-                        <span>F/2.8 / 1/250</span>
-                        <span class="frame-num">EXP 02</span>
-                    </div>
-                    <blockquote class="testimonial-text">
-                        "Rarely do you find a photographer who understands the gravity of shadows. These frames feel like found artifacts."
-                    </blockquote>
-                    <div class="client-info">
-                        <span class="name">JULIAN MORO</span>
-                        <span class="role">Gallerist</span>
-                    </div>
-                </div>
-
-                <!-- Frame 03 -->
-                <div class="film-frame">
-                    <div class="frame-meta">
-                        <span>ISO 100 / PAN-X</span>
-                        <span class="frame-num">EXP 03</span>
-                    </div>
-                    <blockquote class="testimonial-text">
-                        "Every sequence tells a story that words fail to articulate. The texture of the grain brings an unmatched depth to our campaign."
-                    </blockquote>
-                    <div class="client-info">
-                        <span class="name">MARCUS REED</span>
-                        <span class="role">Fashion Lead</span>
-                    </div>
-                </div>
-
-                <!-- Frame 04 -->
-                <div class="film-frame">
-                    <div class="frame-meta">
-                        <span>T-MAX / DEVELOPED</span>
-                        <span class="frame-num">EXP 04</span>
-                    </div>
-                    <blockquote class="testimonial-text">
-                        "In an era of disposable imagery, these portraits carry the weight of permanence. Truly exceptional eye for composition."
-                    </blockquote>
-                    <div class="client-info">
-                        <span class="name">SARA JENKINS</span>
-                        <span class="role">Visual Editor</span>
-                    </div>
-                </div>
-
+            {/* Overlay */}
+            <div className="video-overlay" />
+          </div>
+          <Container className="pageTitle px-(--container-padding)">
+            <div className="pageTitle-content">
+              <span className="subTitle subTitleBlured">About us</span>
+              <h1 className="h1-page-title">Stories told through light</h1>
+              <p>
+                Whether you’re planning a wedding, pre-wedding shoot, birthday,
+                or corporate event — we’d love to hear your story and help bring
+                it.
+              </p>
             </div>
-        </div>
-
-        <div class="controls">
-            <div class="scrubber">
-                <div class="scrubber-handle" id="handle"></div>
+            {/* <div className="pageTitle-box">
+            <div className="pageTitle-social-container">
+              <a href="#">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="none"
+                  strokeWidth="1.2"
+                  color="#000"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke="#000"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8"
+                  ></path>
+                  <path
+                    stroke="#000"
+                    d="M3 16V8a5 5 0 0 1 5-5h8a5 5 0 0 1 5 5v8a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5Z"
+                  ></path>
+                  <path
+                    stroke="#000"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="m17.5 6.51.01-.011"
+                  ></path>
+                </svg>
+              </a>
+              <a href="#">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="none"
+                  strokeWidth="1.2"
+                  color="#000"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke="#000"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M22 12c0 5.523-4.477 10-10 10a9.96 9.96 0 0 1-5-1.338L2 21.5l.832-5.5A10 10 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10"
+                  ></path>
+                  <path
+                    stroke="#000"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="m12.96 13.868 2.08-.406 1.96.753v1.823c0 .607-.522 1.07-1.11.94-1.523-.334-4.29-1.174-6.212-3.11-1.83-1.843-2.455-4.41-2.668-5.827C6.925 7.474 7.374 7 7.943 7h1.894l.735 1.969-.389 2.101"
+                  ></path>
+                </svg>
+              </a>
+              <a href="#">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="none"
+                  strokeWidth="1.2"
+                  color="#000"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke="#000"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M18.118 14.702 14 15.5c-2.782-1.396-4.5-3-5.5-5.5l.77-4.13L7.815 2H4.064c-1.128 0-2.016.932-1.847 2.047.42 2.783 1.66 7.83 5.283 11.453 3.805 3.805 9.286 5.456 12.302 6.113 1.165.253 2.198-.655 2.198-1.848v-3.584z"
+                  ></path>
+                </svg>
+              </a>
             </div>
-            <div style="font-family: 'Space Mono'; font-size: 0.7rem; letter-spacing: 2px;">
-                SCROLL TO ADVANCE
+          </div> */}
+            <div className="pageTitleInfoBox">
+              <div className="InfoBox">
+                <h4>Stories</h4>
+                <p>Told visually</p>
+              </div>
+              <div className="InfoBoxDivider"></div>
+              <div className="InfoBox">
+                <h4>Premium Delivery</h4>
+                <p>High-quality visuals</p>
+              </div>
+              <div className="InfoBoxDivider"></div>
+              <div className="InfoBox">
+                <h4>Memories</h4>
+                <p>Preserved forever</p>
+              </div>
             </div>
-        </div>
-    </section>
+          </Container>
+        </Container>
+      </Section>
 
-    <script>
-        const track = document.getElementById('stripTrack');
-        const container = document.getElementById('stripContainer');
-        const handle = document.getElementById('handle');
-        
-        let isDown = false;
-        let startX;
-        let scrollLeft;
+      {/* Page Contents */}
 
-        container.addEventListener('mousedown', (e) => {
-            isDown = true;
-            startX = e.pageX - container.offsetLeft;
-            scrollLeft = container.scrollLeft;
-            container.style.cursor = 'grabbing';
-        });
+      <Section>
+        <Container className="flex flex-col gap-16">
+          <h2 className="sectionH2Title w-[58rem]">
+            At Vikas Studio, photography is more than just images—it’s about
+            freezing real emotions, genuine smiles, and once-in-a-lifetime
+            moments.
+          </h2>
 
-        container.addEventListener('mouseleave', () => {
-            isDown = false;
-            container.style.cursor = 'grab';
-        });
+          <div className="flex justify-start items-end gap-16">
+            <Image
+              src={"/footer_images/1.webp"}
+              alt="About-us Image"
+              width={500}
+              height={500}
+              className="flex-1/6 object-cover border-rounded-lg max-w-[24rem]"
+            />
+            <div className="flex gap-6 flex-col max-w-[45rem]">
+              <p className="sectionH2Desc">
+                Rooted in Indian traditions and elevated with modern techniques,
+                we specialize in telling stories that feel personal, authentic,
+                and timeless.
+              </p>
+              <p className="sectionH2Desc">
+                From intimate family portraits to grand weddings and large-scale
+                events, every frame we capture reflects care, precision, and
+                quality
+              </p>
+            </div>
 
-        container.addEventListener('mouseup', () => {
-            isDown = false;
-            container.style.cursor = 'grab';
-        });
+            <div>scroll</div>
+          </div>
+        </Container>
+        <Container className="flex justify-between items-center gap-16">
+          <div className="w-1/2 flex flex-col items-start gap-6">
+            <div className="flex flex-col items-start gap-6">
+              <span className="subTitle">Our Story</span>
+              <h2>Our Story</h2>
 
-        container.addEventListener('mousemove', (e) => {
-            if (!isDown) return;
-            e.preventDefault();
-            const x = e.pageX - container.offsetLeft;
-            const walk = (x - startX) * 2;
-            container.scrollLeft = scrollLeft - walk;
-            updateScrubber();
-        });
+              <div className="flex flex-col items-start gap-4">
+                <p>
+                  Founded with a passion for visual storytelling, Vikas Studio
+                  has grown into a trusted name for professional photography
+                  across all occasions. With years of experience and a deep
+                  understanding of Indian ceremonies, cultures, and
+                  celebrations, we know exactly when to click and what to
+                  capture.
+                </p>
+                <p>
+                  Every project is approached with the same intent—deliver
+                  photographs that feel alive even years later.
+                </p>
+              </div>
+            </div>
+            <div className="ourStoryQuote">
+              "We believe the best photographs are not staged—they’re felt."
+            </div>
+            <div className="flex gap-6">
+              <div className="flex gap-3 items-center outStoryStatsItem">
+                <div className="flex justify-center items-center rounded-full bg-(--white) w-12 h-12">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    fill="none"
+                    strokeWidth="1.5"
+                    color="var(--brandColor)"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke="var(--brandColor)"
+                      strokeLinejoin="round"
+                      d="M22 8.862a5.95 5.95 0 0 1-1.654 4.13c-2.441 2.531-4.809 5.17-7.34 7.608-.581.55-1.502.53-2.057-.045l-7.295-7.562c-2.205-2.286-2.205-5.976 0-8.261a5.58 5.58 0 0 1 8.08 0l.266.274.265-.274A5.61 5.61 0 0 1 16.305 3c1.52 0 2.973.624 4.04 1.732A5.95 5.95 0 0 1 22 8.862Z"
+                    ></path>
+                  </svg>
+                </div>
+                <div className="flex flex-col gap-1">
+                  <p className="">
+                    <b>500+ Weddings</b>
+                  </p>
+                  <p className="">Captured WorldWide</p>
+                </div>
+              </div>
+              <div className="flex gap-3 items-center outStoryStatsItem">
+                <div className="flex justify-center items-center rounded-full bg-(--white) w-12 h-12">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke="var(--brandColor)"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="1.5"
+                      d="M8.5 14v8l3.818-3 3.182 3v-8m3-5.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0"
+                    ></path>
+                  </svg>
+                </div>
+                <div className="flex flex-col gap-1">
+                  <p className="">
+                    <b>Award Winning</b>
+                  </p>
+                  <p className="">Recognised Exxcellence</p>
+                </div>
+              </div>
+            </div>
+            <div className="w-full bg-(--text-white-color) h-px"></div>
+            <div>
+              <Button content="Start your journey" path="/contact" />
+              {/* Signature */}
+            </div>
+          </div>
+          <div className="w-1/2">
+            <Image
+              src={"/footer_images/1.webp"}
+              alt="About-us Image"
+              width={500}
+              height={500}
+              className="flex-1/6 object-cover border-rounded-lg min-w-full"
+            />
+          </div>
+        </Container>
+      </Section>
 
-        // Wheel horizontal scroll
-        container.addEventListener('wheel', (e) => {
-            if (e.deltaY !== 0) {
-                e.preventDefault();
-                container.scrollLeft += e.deltaY;
-                updateScrubber();
-            }
-        });
+      <ImageTelescope />
 
-        function updateScrubber() {
-            const maxScroll = container.scrollWidth - container.clientWidth;
-            const scrollPercentage = (container.scrollLeft / maxScroll) * 100;
-            handle.style.left = `${Math.min(Math.max(scrollPercentage, 0), 90)}%`;
-        }
-
-        // Entrance Animation
-        const observerOptions = {
-            threshold: 0.1
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const frames = entry.target.querySelectorAll('.film-frame');
-                    frames.forEach((frame, index) => {
-                        setTimeout(() => {
-                            frame.style.opacity = '1';
-                            frame.style.transform = 'translateX(0)';
-                        }, index * 150);
-                    });
-                }
-            });
-        }, observerOptions);
-
-        observer.observe(container);
-
-        // Set initial state for animation
-        document.querySelectorAll('.film-frame').forEach(f => {
-            f.style.opacity = '0';
-            f.style.transform = 'translateX(50px)';
-            f.style.transition = 'all 0.8s cubic-bezier(0.23, 1, 0.32, 1)';
-        });
-    </script>
-</body>
-</html>
+      <Slider />
+    </>
+  );
+}

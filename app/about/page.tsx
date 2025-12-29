@@ -6,6 +6,7 @@ import "./About.css";
 import ImageTelescope from "../components/layout/ImageTelescope/ImageTelescope";
 import CardFan from "../components/layout/CardFan/CardFan";
 import FilmTestimonials from "../components/layout/Testimonials/Testimonials";
+import Slider from "../components/layout/Testimonials/Testimonials";
 
 export default function AboutPage() {
   return (
@@ -13,7 +14,8 @@ export default function AboutPage() {
       <Section className="page-hero px-(--container-padding-sm) pb-0">
         <Container
           className="page-hero-container border-rounded-md"
-          size="wide">
+          size="wide"
+        >
           <div className="video-wrapper">
             <video
               className="bg-video"
@@ -21,7 +23,8 @@ export default function AboutPage() {
               muted
               loop
               playsInline
-              preload="metadata">
+              preload="metadata"
+            >
               <source
                 src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4"
                 type="video/mp4"
@@ -203,11 +206,13 @@ export default function AboutPage() {
                     fill="none"
                     strokeWidth="1.5"
                     color="var(--brandColor)"
-                    viewBox="0 0 24 24">
+                    viewBox="0 0 24 24"
+                  >
                     <path
                       stroke="var(--brandColor)"
                       strokeLinejoin="round"
-                      d="M22 8.862a5.95 5.95 0 0 1-1.654 4.13c-2.441 2.531-4.809 5.17-7.34 7.608-.581.55-1.502.53-2.057-.045l-7.295-7.562c-2.205-2.286-2.205-5.976 0-8.261a5.58 5.58 0 0 1 8.08 0l.266.274.265-.274A5.61 5.61 0 0 1 16.305 3c1.52 0 2.973.624 4.04 1.732A5.95 5.95 0 0 1 22 8.862Z"></path>
+                      d="M22 8.862a5.95 5.95 0 0 1-1.654 4.13c-2.441 2.531-4.809 5.17-7.34 7.608-.581.55-1.502.53-2.057-.045l-7.295-7.562c-2.205-2.286-2.205-5.976 0-8.261a5.58 5.58 0 0 1 8.08 0l.266.274.265-.274A5.61 5.61 0 0 1 16.305 3c1.52 0 2.973.624 4.04 1.732A5.95 5.95 0 0 1 22 8.862Z"
+                    ></path>
                   </svg>
                 </div>
                 <div className="flex flex-col gap-1">
@@ -224,13 +229,15 @@ export default function AboutPage() {
                     width="24"
                     height="24"
                     fill="none"
-                    viewBox="0 0 24 24">
+                    viewBox="0 0 24 24"
+                  >
                     <path
                       stroke="var(--brandColor)"
                       strokeLinecap="round"
                       strokeLinejoin="round"
                       strokeWidth="1.5"
-                      d="M8.5 14v8l3.818-3 3.182 3v-8m3-5.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0"></path>
+                      d="M8.5 14v8l3.818-3 3.182 3v-8m3-5.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0"
+                    ></path>
                   </svg>
                 </div>
                 <div className="flex flex-col gap-1">
@@ -243,9 +250,8 @@ export default function AboutPage() {
             </div>
             <div className="w-full bg-(--text-white-color) h-px"></div>
             <div>
-              <Button content="Start your journey" path="/contact"/>
+              <Button content="Start your journey" path="/contact" />
               {/* Signature */}
-              
             </div>
           </div>
           <div className="w-1/2">
@@ -260,10 +266,9 @@ export default function AboutPage() {
         </Container>
       </Section>
 
-              <ImageTelescope />
+      <ImageTelescope />
 
-       <FilmTestimonials />
-
+      <Slider />
     </>
   );
 }
