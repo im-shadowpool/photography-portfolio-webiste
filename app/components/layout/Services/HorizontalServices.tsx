@@ -5,7 +5,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import ServiceCard from "./ServiceCard";
 import { services } from "app/lib/data/servicesData";
-import GrainOverlay from "./GrainOverlay";
+
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -53,10 +53,10 @@ export default function HorizontalServices() {
         ref={sectionRef}
         className="h-screen flex items-center overflow-hidden"
       >
-        <GrainOverlay />
+        
         <div
           ref={scrollerRef}
-          className="flex items-center h-full px-[10vw] gap-16"
+          className="flex items-center h-full px-[10vw] gap-9"
         >
           {/* Title block */}
           <div className="min-w-[45vw] pr-[10vw]">
@@ -72,21 +72,14 @@ export default function HorizontalServices() {
           {services.map((service, index) => (
             <ServiceCard
               key={service.id}
-              index={service.id}
               title={service.title}
               description={service.description}
-              isLast={index === services.length - 1}
+              image={service.image}
+              link={service.slug}
             />
           ))}
 
-          <div className="min-w-[45vw] pr-[10vw]">
-            <span className="font-mono text-xs uppercase tracking-widest text-neutral-400 block mb-6">
-              Strategic Systems // 2024
-            </span>
-            <h1 className="text-[clamp(3rem,8vw,6rem)] font-extrabold leading-[0.9] uppercase border-l-4 border-neutral-600 pl-8">
-              Core <br /> Services
-            </h1>
-          </div>
+
         </div>
       </section>
     </>

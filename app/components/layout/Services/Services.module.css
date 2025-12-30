@@ -1,0 +1,12 @@
+.serviceCard{
+    transition: box-shadow 0.3s ease-in-out;
+    width: 100%;
+    min-width: 26rem;
+    max-width: 30rem;
+}
+.serviceCardTitle{
+    font-size: 3rem;
+  line-height: 1.2em;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
