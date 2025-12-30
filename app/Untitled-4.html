@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;900&family=JetBrains+Mono:wght@400;700&display=swap");
+
+      :root {
+        --void: #050505;
+        --steel: #e2e2e2;
+        --focus: #ff3c00;
+        --blade-bg: #111111;
+        --tension-curve: cubic-bezier(0.9, 0, 0.1, 1);
+        --spring-curve: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      body {
+        background-color: var(--void);
+        color: var(--steel);
+        font-family: "Inter", sans-serif;
+        overflow: hidden;
+        height: 100vh;
+      }
+
+      /* Noise Overlay for Texture */
+      .mechanical-texture {
+        position: fixed;
+        inset: 0;
+        z-index: 100;
+        pointer-events: none;
+        opacity: 0.03;
+        background: url('data:image/svg+xml,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23n)"/></svg>');
+      }
+
+      .shutter-viewport {
+        position: relative;
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+        padding: 0 10vw;
+      }
+
+      /* Background Indicators */
+      .shutter-ui {
+        position: absolute;
+        inset: 0;
+        padding: 3rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        pointer-events: none;
+        z-index: 5;
+      }
+
+      .ui-top {
+        display: flex;
+        justify-content: space-between;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.7rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.3);
+      }
+
+      .ui-center-mark {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 40px;
+        height: 40px;
+        border: 1px solid rgba(255, 60, 0, 0.3);
+      }
+
+      .ui-center-mark::before,
+      .ui-center-mark::after {
+        content: "";
+        position: absolute;
+        background: var(--focus);
+      }
+      .ui-center-mark::before {
+        width: 10px;
+        height: 1px;
+        top: 50%;
+        left: -5px;
+      }
+      .ui-center-mark::after {
+        width: 1px;
+        height: 10px;
+        left: 50%;
+        top: -5px;
+      }
+
+      /* Mechanism Track */
+      .exposure-track {
+        display: flex;
+        gap: 2px;
+        will-change: transform;
+        cursor: grab;
+      }
+
+      .exposure-track:active {
+        cursor: grabbing;
+      }
+
+      .shutter-blade {
+        position: relative;
+        min-width: 400px;
+        height: 600px;
+        background: #0a0a0a;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        transition: transform 0.6s var(--tension-curve);
+      }
+
+      /* The Mechanical "Shutter" Effect */
+      .blade-overlay {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        background: var(--blade-bg);
+        display: flex;
+        flex-direction: column;
+      }
+
+      .shutter-leaf-top,
+      .shutter-leaf-bottom {
+        flex: 1;
+        background: #111;
+        transition: transform 0.6s var(--tension-curve);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid rgba(255, 255, 255, 0.03);
+      }
+
+      .shutter-leaf-top {
+        transform-origin: top;
+      }
+      .shutter-leaf-bottom {
+        transform-origin: bottom;
+      }
+
+      .shutter-blade:hover .shutter-leaf-top {
+        transform: translateY(-90%);
+      }
+      .shutter-blade:hover .shutter-leaf-bottom {
+        transform: translateY(90%);
+      }
+
+      .shutter-blade:hover .blade-content {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      .blade-label {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.65rem;
+        color: #444;
+        position: absolute;
+      }
+
+      /* Inner Content */
+      .blade-content {
+        position: absolute;
+        inset: 0;
+        padding: 3rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        opacity: 0;
+        transform: scale(0.95);
+        transition: all 0.6s var(--tension-curve);
+        background: linear-gradient(
+          to bottom,
+          transparent 40%,
+          rgba(0, 0, 0, 0.8)
+        );
+      }
+
+      .exposure-num {
+        font-family: "JetBrains Mono", monospace;
+        color: var(--focus);
+        font-size: 0.8rem;
+        margin-bottom: 1rem;
+      }
+
+      .blade-title {
+        font-size: 2.5rem;
+        font-weight: 900;
+        line-height: 0.9;
+        text-transform: uppercase;
+        letter-spacing: -0.05em;
+        margin-bottom: 1.5rem;
+      }
+
+      .blade-desc {
+        font-size: 0.9rem;
+        color: #888;
+        line-height: 1.6;
+        max-width: 250px;
+      }
+
+      /* Control Deck */
+      .control-deck {
+        position: absolute;
+        bottom: 3rem;
+        left: 10vw;
+        right: 10vw;
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        z-index: 20;
+      }
+
+      .tension-slider {
+        flex-grow: 1;
+        height: 2px;
+        background: rgba(255, 255, 255, 0.1);
+        position: relative;
+      }
+
+      .tension-fill {
+        position: absolute;
+        height: 100%;
+        background: var(--focus);
+        width: 0%;
+        transition: width 0.3s ease;
+      }
+
+      .ratchet-btn {
+        background: none;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: var(--steel);
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: 0.2s;
+      }
+
+      .ratchet-btn:hover {
+        background: var(--focus);
+        border-color: var(--focus);
+        color: white;
+      }
+
+      .ratchet-btn svg {
+        width: 18px;
+        fill: currentColor;
+      }
+
+      @media (max-width: 768px) {
+        .shutter-blade {
+          min-width: 80vw;
+          height: 70vh;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="mechanical-texture"></div>
+
+    <div class="shutter-ui">
+      <div class="ui-top">
+        <span>Mech_Status: Active</span>
+        <span>Spring_Tension: 84N</span>
+        <span>Rec_System: Optic-V</span>
+      </div>
+      <div class="ui-bottom">
+        <span id="coord-display">X: 000.00 Y: 000.00</span>
+        <span>Format: 35mm Digital Mono</span>
+      </div>
+      <div class="ui-center-mark"></div>
+    </div>
+
+    <main class="shutter-viewport" id="viewport">
+      <div class="exposure-track" id="track">
+        <!-- Exposure 01 -->
+        <div class="shutter-blade">
+          <div class="blade-overlay">
+            <div class="shutter-leaf-top">
+              <span class="blade-label">EXP_REF_001</span>
+            </div>
+            <div class="shutter-leaf-bottom">
+              <span class="blade-label">SHUTTER_UNIT_A</span>
+            </div>
+          </div>
+          <div class="blade-content">
+            <div class="exposure-num">S_01 / LITHIC</div>
+            <h2 class="blade-title">High Tension<br />Architecture</h2>
+            <p class="blade-desc">
+              Precision-cut stone surfaces captured under raw tungsten lighting.
+            </p>
+          </div>
+        </div>
+
+        <!-- Exposure 02 -->
+        <div class="shutter-blade">
+          <div class="blade-overlay">
+            <div class="shutter-leaf-top">
+              <span class="blade-label">EXP_REF_002</span>
+            </div>
+            <div class="shutter-leaf-bottom">
+              <span class="blade-label">SHUTTER_UNIT_B</span>
+            </div>
+          </div>
+          <div class="blade-content">
+            <div class="exposure-num">S_02 / KINETIC</div>
+            <h2 class="blade-title">Brutalist<br />Velocity</h2>
+            <p class="blade-desc">
+              Exploring the intersection of static concrete and high-speed
+              motion.
+            </p>
+          </div>
+        </div>
+
+        <!-- Exposure 03 -->
+        <div class="shutter-blade">
+          <div class="blade-overlay">
+            <div class="shutter-leaf-top">
+              <span class="blade-label">EXP_REF_003</span>
+            </div>
+            <div class="shutter-leaf-bottom">
+              <span class="blade-label">SHUTTER_UNIT_C</span>
+            </div>
+          </div>
+          <div class="blade-content">
+            <div class="exposure-num">S_03 / OPTIC</div>
+            <h2 class="blade-title">Refractive<br />Void</h2>
+            <p class="blade-desc">
+              Light dispersion through heavy lead-glass elements in darkness.
+            </p>
+          </div>
+        </div>
+
+        <!-- Exposure 04 -->
+        <div class="shutter-blade">
+          <div class="blade-overlay">
+            <div class="shutter-leaf-top">
+              <span class="blade-label">EXP_REF_004</span>
+            </div>
+            <div class="shutter-leaf-bottom">
+              <span class="blade-label">SHUTTER_UNIT_D</span>
+            </div>
+          </div>
+          <div class="blade-content">
+            <div class="exposure-num">S_04 / CHRONO</div>
+            <h2 class="blade-title">Mechanical<br />Flow</h2>
+            <p class="blade-desc">
+              Visualizing the silent internal clockwork of modern engineering.
+            </p>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <div class="control-deck">
+      <button class="ratchet-btn" onclick="nav(-1)">
+        <svg viewBox="0 0 24 24">
+          <path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z" />
+        </svg>
+      </button>
+      <div class="tension-slider">
+        <div class="tension-fill" id="tension-fill"></div>
+      </div>
+      <button class="ratchet-btn" onclick="nav(1)">
+        <svg viewBox="0 0 24 24">
+          <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+        </svg>
+      </button>
+    </div>
+
+    <script>
+      const track = document.getElementById("track");
+      const tensionFill = document.getElementById("tension-fill");
+      const coordDisplay = document.getElementById("coord-display");
+
+      let isDragging = false;
+      let startX = 0;
+      let currentTranslate = 0;
+      let prevTranslate = 0;
+      let animationID = 0;
+      let currentIndex = 0;
+
+      const blades = document.querySelectorAll(".shutter-blade");
+      const totalBlades = blades.length;
+
+      // Mouse & Touch Tracking
+      window.addEventListener("mousemove", (e) => {
+        const x = (e.clientX / window.innerWidth).toFixed(2);
+        const y = (e.clientY / window.innerHeight).toFixed(2);
+        coordDisplay.textContent = `X: ${x} Y: ${y}`;
+      });
+
+      track.addEventListener("mousedown", dragStart);
+      track.addEventListener("touchstart", dragStart);
+      track.addEventListener("mouseup", dragEnd);
+      track.addEventListener("touchend", dragEnd);
+      track.addEventListener("mousemove", dragAction);
+      track.addEventListener("touchmove", dragAction);
+
+      function dragStart(e) {
+        isDragging = true;
+        startX = getPositionX(e);
+        animationID = requestAnimationFrame(animation);
+        track.style.transition = "none";
+      }
+
+      function dragAction(e) {
+        if (isDragging) {
+          const currentPosition = getPositionX(e);
+          currentTranslate = prevTranslate + currentPosition - startX;
+
+          // Resistance at edges
+          if (currentTranslate > 0) currentTranslate /= 3;
+          const maxScroll = -(
+            track.scrollWidth -
+            window.innerWidth +
+            window.innerWidth * 0.2
+          );
+          if (currentTranslate < maxScroll) {
+            currentTranslate = maxScroll + (currentTranslate - maxScroll) / 3;
+          }
+        }
+      }
+
+      function dragEnd() {
+        isDragging = false;
+        cancelAnimationFrame(animationID);
+
+        const movedBy = currentTranslate - prevTranslate;
+
+        // Ratchet Snap Logic
+        if (movedBy < -100 && currentIndex < totalBlades - 1) currentIndex += 1;
+        if (movedBy > 100 && currentIndex > 0) currentIndex -= 1;
+
+        setPositionByIndex();
+      }
+
+      function getPositionX(e) {
+        return e.type.includes("mouse") ? e.pageX : e.touches[0].clientX;
+      }
+
+      function animation() {
+        setSliderPosition();
+        if (isDragging) requestAnimationFrame(animation);
+      }
+
+      function setSliderPosition() {
+        track.style.transform = `translateX(${currentTranslate}px)`;
+        updateTensionUI();
+      }
+
+      function setPositionByIndex() {
+        const bladeWidth = blades[0].offsetWidth + 2;
+        currentTranslate = currentIndex * -bladeWidth;
+        prevTranslate = currentTranslate;
+        track.style.transition = "transform 0.7s var(--tension-curve)";
+        setSliderPosition();
+      }
+
+      function nav(dir) {
+        currentIndex += dir;
+        if (currentIndex < 0) currentIndex = 0;
+        if (currentIndex > totalBlades - 1) currentIndex = totalBlades - 1;
+        setPositionByIndex();
+      }
+
+      function updateTensionUI() {
+        const maxScroll = track.scrollWidth - window.innerWidth;
+        const percentage = Math.abs(currentTranslate / maxScroll) * 100;
+        tensionFill.style.width = `${Math.min(Math.max(percentage, 0), 100)}%`;
+      }
+
+      // Resize Handler
+      window.addEventListener("resize", setPositionByIndex);
+    </script>
+  </body>
+</html>

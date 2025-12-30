@@ -7,6 +7,7 @@ import ImageTelescope from "../components/layout/ImageTelescope/ImageTelescope";
 import CardFan from "../components/layout/CardFan/CardFan";
 import FilmTestimonials from "../components/layout/Testimonials/Testimonials";
 import Slider from "../components/layout/Testimonials/Testimonials";
+import HorizontalServices from "../components/layout/Services/HorizontalServices";
 
 export default function AboutPage() {
   return (
@@ -267,6 +268,8 @@ export default function AboutPage() {
       </Section>
 
       <ImageTelescope />
+
+      <HorizontalServices />
 
       <Slider />
     </>

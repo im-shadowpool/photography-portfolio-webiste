@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;600&family=Space+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --glass: rgba(255, 255, 255, 0.03);
+        --border-highlight: rgba(255, 255, 255, 0.4);
+        --border-shadow: rgba(0, 0, 0, 0.5);
+        --accent: #f0f0f0;
+        --text-main: #ffffff;
+        --text-dim: rgba(255, 255, 255, 0.5);
+        --bg-deep: #0a0a0a;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background-color: var(--bg-deep);
+        color: var(--text-main);
+        font-family: "Outfit", sans-serif;
+        overflow-x: hidden;
+        /* Texture background */
+        background-image: radial-gradient(
+          circle at 50% 50%,
+          #1a1a1a 0%,
+          #0a0a0a 100%
+        );
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .vitrine-section {
+        width: 100%;
+        max-width: 1200px;
+        padding: 80px 40px;
+        position: relative;
+      }
+
+      .slider-container {
+        position: relative;
+        width: 100%;
+        height: 500px;
+        perspective: 2000px;
+      }
+
+      .slide {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        visibility: hidden;
+        transform: scale(0.95) translateZ(-100px);
+        transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .slide.active {
+        opacity: 1;
+        visibility: visible;
+        transform: scale(1) translateZ(0);
+      }
+
+      /* The Vitrine Case - Beveled Glass Metaphor */
+      .vitrine-case {
+        position: relative;
+        width: 100%;
+        max-width: 900px;
+        background: var(--glass);
+        backdrop-filter: blur(25px) saturate(150%);
+        -webkit-backdrop-filter: blur(25px) saturate(150%);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 80px;
+
+        /* Beveled edges simulated via complex box shadows and gradients */
+        box-shadow: inset 1px 1px 0px var(--border-highlight),
+          inset -1px -1px 0px var(--border-shadow),
+          0 30px 60px rgba(0, 0, 0, 0.4);
+
+        overflow: hidden;
+      }
+
+      /* Prismatic Refraction Light Streak */
+      .vitrine-case::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 50%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.05) 45%,
+          rgba(255, 255, 255, 0.1) 50%,
+          rgba(255, 255, 255, 0.05) 55%,
+          transparent
+        );
+        transform: skewX(-25deg);
+        transition: 0.7s;
+      }
+
+      .vitrine-case:hover::before {
+        left: 150%;
+        transition: 1s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .testimonial-text {
+        font-size: 2.5rem;
+        line-height: 1.2;
+        font-weight: 300;
+        margin-bottom: 60px;
+        letter-spacing: -0.02em;
+        position: relative;
+      }
+
+      .testimonial-text::after {
+        content: '"';
+        position: absolute;
+        top: -40px;
+        left: -20px;
+        font-size: 8rem;
+        opacity: 0.05;
+        font-family: serif;
+      }
+
+      .vitrine-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        padding-top: 40px;
+      }
+
+      .author-info {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .author-name {
+        font-size: 1.25rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+      }
+
+      .meta-data {
+        font-family: "Space Mono", monospace;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        color: var(--text-dim);
+        display: flex;
+        gap: 20px;
+      }
+
+      .meta-data span::before {
+        content: "— ";
+      }
+
+      /* The Button - Floating Beveled Glass */
+      .view-album-btn {
+        background: transparent;
+        border: 1px solid var(--border-highlight);
+        color: var(--text-main);
+        padding: 14px 28px;
+        font-family: "Space Mono", monospace;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+        cursor: pointer;
+        position: relative;
+        transition: all 0.3s ease;
+        box-shadow: 2px 2px 0px var(--border-highlight);
+      }
+
+      .view-album-btn:hover {
+        background: white;
+        color: black;
+        box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.2);
+        transform: translate(-2px, -2px);
+      }
+
+      /* Navigation Controls */
+      .nav-controls {
+        position: absolute;
+        bottom: -40px;
+        right: 40px;
+        display: flex;
+        gap: 1px;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 1px;
+      }
+
+      .nav-btn {
+        background: var(--bg-deep);
+        border: none;
+        width: 60px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+
+      .nav-btn svg {
+        width: 20px;
+        height: 20px;
+        stroke: var(--text-main);
+        stroke-width: 1.5;
+        fill: none;
+      }
+
+      .nav-btn:hover {
+        background: #1a1a1a;
+      }
+
+      .nav-btn:active {
+        background: #ffffff;
+      }
+
+      .nav-btn:active svg {
+        stroke: #000000;
+      }
+
+      /* Counter */
+      .slide-counter {
+        position: absolute;
+        left: 40px;
+        bottom: -30px;
+        font-family: "Space Mono", monospace;
+        font-size: 0.8rem;
+        color: var(--text-dim);
+      }
+
+      @media (max-width: 768px) {
+        .vitrine-case {
+          padding: 40px;
+        }
+        .testimonial-text {
+          font-size: 1.5rem;
+          margin-bottom: 40px;
+        }
+        .vitrine-footer {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 30px;
+        }
+        .slider-container {
+          height: 600px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <section class="vitrine-section">
+      <div class="slider-container" id="vitrine-slider">
+        <!-- Slide 1 -->
+        <div class="slide active">
+          <div class="vitrine-case">
+            <blockquote class="testimonial-text">
+              Capturing the silence of the Nordic fjords was a spiritual
+              experience. The lens found things I didn't even see with my own
+              eyes.
+            </blockquote>
+            <div class="vitrine-footer">
+              <div class="author-info">
+                <span class="author-name">Elias Thorne</span>
+                <div class="meta-data">
+                  <span>Cinematic Landscape</span>
+                  <span>Lofoten, Norway</span>
+                </div>
+              </div>
+              <button class="view-album-btn">View Album</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 2 -->
+        <div class="slide">
+          <div class="vitrine-case">
+            <blockquote class="testimonial-text">
+              The way the architectural geometry was balanced with natural light
+              changed my perspective on how my work should be documented.
+            </blockquote>
+            <div class="vitrine-footer">
+              <div class="author-info">
+                <span class="author-name">Sienna Aris</span>
+                <div class="meta-data">
+                  <span>Architectural Study</span>
+                  <span>Tokyo, Japan</span>
+                </div>
+              </div>
+              <button class="view-album-btn">View Album</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 3 -->
+        <div class="slide">
+          <div class="vitrine-case">
+            <blockquote class="testimonial-text">
+              In every frame, there's a story told through shadows. It's not
+              just photography; it's visual poetry in its rawest form.
+            </blockquote>
+            <div class="vitrine-footer">
+              <div class="author-info">
+                <span class="author-name">Marcus Vane</span>
+                <div class="meta-data">
+                  <span>Noir Portraiture</span>
+                  <span>Berlin, Germany</span>
+                </div>
+              </div>
+              <button class="view-album-btn">View Album</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-counter">
+        <span id="current-slide">01</span> / <span id="total-slides">03</span>
+      </div>
+
+      <div class="nav-controls">
+        <button class="nav-btn" onclick="prevSlide()">
+          <svg viewBox="0 0 24 24">
+            <path d="M19 12H5M5 12L12 19M5 12L12 5" />
+          </svg>
+        </button>
+        <button class="nav-btn" onclick="nextSlide()">
+          <svg viewBox="0 0 24 24">
+            <path d="M5 12H19M19 12L12 5M19 12L12 19" />
+          </svg>
+        </button>
+      </div>
+    </section>
+
+    <script>
+      let currentIdx = 0;
+      const slides = document.querySelectorAll(".slide");
+      const currentCounter = document.getElementById("current-slide");
+      const totalCounter = document.getElementById("total-slides");
+
+      totalCounter.innerText = slides.length.toString().padStart(2, "0");
+
+      function updateSlider() {
+        slides.forEach((slide, index) => {
+          slide.classList.remove("active");
+          if (index === currentIdx) {
+            slide.classList.add("active");
+          }
+        });
+        currentCounter.innerText = (currentIdx + 1).toString().padStart(2, "0");
+      }
+
+      function nextSlide() {
+        currentIdx = (currentIdx + 1) % slides.length;
+        updateSlider();
+      }
+
+      function prevSlide() {
+        currentIdx = (currentIdx - 1 + slides.length) % slides.length;
+        updateSlider();
+      }
+
+      // Auto-advance
+      let autoPlay = setInterval(nextSlide, 8000);
+
+      // Reset timer on manual click
+      document.querySelectorAll(".nav-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          clearInterval(autoPlay);
+          autoPlay = setInterval(nextSlide, 8000);
+        });
+      });
+    </script>
+  </body>
+</html>

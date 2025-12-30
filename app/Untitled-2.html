@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;800&family=JetBrains+Mono:wght@400;700&display=swap");
+
+      :root {
+        --obsidian-deep: #fff;
+        --obsidian-surface: #121212;
+        --obsidian-edge: rgba(255, 255, 255, 0.08);
+        --friction-glow: #ffffff;
+        --font-main: "Inter", sans-serif;
+        --font-mono: "JetBrains Mono", monospace;
+        --transition-fluid: cubic-bezier(0.23, 1, 0.32, 1);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      body {
+        background-color: var(--obsidian-deep);
+        color: #fff;
+        overflow-x: hidden;
+        font-family: var(--font-main);
+      }
+
+      .kinetic-container {
+        position: relative;
+        width: 100%;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        overflow: hidden;
+        padding: 4rem 2rem;
+      }
+
+      /* Friction Noise Overlay */
+      .noise-canvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        opacity: 0.04;
+        z-index: 10;
+      }
+
+      .section-header {
+        max-width: 1400px;
+        margin: 0 auto 4rem auto;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        padding: 0 1rem;
+      }
+
+      .section-header h2 {
+        font-size: clamp(3rem, 8vw, 6rem);
+        font-weight: 800;
+        line-height: 0.9;
+        letter-spacing: -0.04em;
+        text-transform: uppercase;
+      }
+
+      .section-header .stats {
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        color: #666;
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+        padding-bottom: 1rem;
+      }
+
+      /* Slider Engine */
+      .obsidian-slider {
+        cursor: grab;
+        position: relative;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        user-select: none;
+      }
+
+      .obsidian-slider:active {
+        cursor: grabbing;
+      }
+
+      .slider-track {
+        display: flex;
+        gap: 2rem;
+        padding-left: 10vw;
+        will-change: transform;
+        transition: transform 0.8s var(--transition-fluid);
+      }
+
+      .shard-card {
+        position: relative;
+        min-width: 450px;
+        height: 550px;
+        background: linear-gradient(135deg, #151515 0%, #0a0a0a 100%);
+        border: 1px solid var(--obsidian-edge);
+        padding: 3rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        overflow: hidden;
+        transition: border-color 0.4s ease;
+      }
+
+      .shard-card:hover {
+        border-color: rgba(255, 255, 255, 0.2);
+      }
+
+      /* The Obsidian Reflection */
+      .shard-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.03),
+          transparent
+        );
+        transition: 0.8s var(--transition-fluid);
+      }
+
+      .shard-card:hover::before {
+        left: 100%;
+      }
+
+      .quote-mark {
+        font-family: var(--font-mono);
+        font-size: 0.8rem;
+        color: #444;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .quote-mark::after {
+        content: "";
+        width: 40px;
+        height: 1px;
+        background: #222;
+      }
+
+      .testimonial-content {
+        font-size: 1.75rem;
+        line-height: 1.3;
+        font-weight: 300;
+        color: #ccc;
+      }
+
+      .testimonial-content strong {
+        color: #fff;
+        font-weight: 800;
+      }
+
+      .client-meta {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .client-name {
+        font-family: var(--font-mono);
+        font-weight: 700;
+        font-size: 1rem;
+        text-transform: uppercase;
+      }
+
+      .client-role {
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        color: #555;
+        letter-spacing: 0.1em;
+      }
+
+      /* UI Controls */
+      .controls {
+        margin-top: 4rem;
+        padding: 0 10vw;
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+      }
+
+      .progress-bar {
+        flex-grow: 1;
+        height: 1px;
+        background: #222;
+        position: relative;
+      }
+
+      .progress-fill {
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 20%;
+        background: #fff;
+        transition: width 0.4s var(--transition-fluid);
+        box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+      }
+
+      .nav-buttons {
+        display: flex;
+        gap: 1rem;
+      }
+
+      .nav-btn {
+        background: transparent;
+        border: 1px solid var(--obsidian-edge);
+        width: 60px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      .nav-btn:hover {
+        background: #fff;
+      }
+
+      .nav-btn:hover svg {
+        stroke: #000;
+      }
+
+      .nav-btn svg {
+        width: 20px;
+        stroke: #fff;
+        stroke-width: 1.5;
+        fill: none;
+      }
+
+      @media (max-width: 768px) {
+        .shard-card {
+          min-width: 85vw;
+          padding: 2rem;
+        }
+        .section-header h2 {
+          font-size: 3rem;
+        }
+      }
+
+      /* SVG Grain Filter */
+      .filter-svg {
+        position: absolute;
+        width: 0;
+        height: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <svg class="filter-svg">
+      <filter id="grain">
+        <feTurbulence
+          type="fractalNoise"
+          baseFrequency="0.65"
+          numOctaves="3"
+          stitchTiles="stitch"
+        />
+        <feColorMatrix type="saturate" values="0" />
+        <feComponentTransfer>
+          <feFuncR type="linear" slope="0.1" />
+          <feFuncG type="linear" slope="0.1" />
+          <feFuncB type="linear" slope="0.1" />
+        </feComponentTransfer>
+      </filter>
+    </svg>
+
+    <div class="kinetic-container">
+      <div class="noise-canvas" style="filter: url(#grain)"></div>
+
+      <div class="obsidian-slider" id="slider">
+        <div class="slider-track" id="track">
+          <!-- Slide 1 -->
+          <div class="shard-card">
+            <div class="quote-mark">LOG_01</div>
+            <div class="testimonial-content">
+              "The <strong>kinetic energy</strong> captured in every frame
+              transformed our brand identity into something visceral."
+            </div>
+            <div class="client-meta">
+              <span class="client-name">Aether Architecture</span>
+              <span class="client-role">PRINCIPAL DESIGNER</span>
+            </div>
+          </div>
+
+          <!-- Slide 2 -->
+          <div class="shard-card">
+            <div class="quote-mark">LOG_02</div>
+            <div class="testimonial-content">
+              "Obsidian precision. They don't just take photos; they
+              <strong>sculpt with light</strong> and shadow."
+            </div>
+            <div class="client-meta">
+              <span class="client-name">Marcus Thorne</span>
+              <span class="client-role">CREATIVE DIRECTOR</span>
+            </div>
+          </div>
+
+          <!-- Slide 3 -->
+          <div class="shard-card">
+            <div class="quote-mark">LOG_03</div>
+            <div class="testimonial-content">
+              "A friction-less experience with high-friction results.
+              <strong>Pure visual grit</strong> that stands out."
+            </div>
+            <div class="client-meta">
+              <span class="client-name">Vogue Vanguard</span>
+              <span class="client-role">EDITORIAL HEAD</span>
+            </div>
+          </div>
+
+          <!-- Slide 4 -->
+          <div class="shard-card">
+            <div class="quote-mark">LOG_04</div>
+            <div class="testimonial-content">
+              "Unapologetically bold. The technical
+              <strong>monochromatic mastery</strong> is unlike anything else."
+            </div>
+            <div class="client-meta">
+              <span class="client-name">Synthetix Labs</span>
+              <span class="client-role">CEO</span>
+            </div>
+          </div>
+
+          <!-- Slide 5 -->
+          <div class="shard-card">
+            <div class="quote-mark">LOG_05</div>
+            <div class="testimonial-content">
+              "They find the <strong>sharpness in the void</strong>. Every image
+              feels like a physical object."
+            </div>
+            <div class="client-meta">
+              <span class="client-name">Helios Collective</span>
+              <span class="client-role">ART CURATOR</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <div class="progress-bar">
+          <div class="progress-fill" id="progress"></div>
+        </div>
+        <div class="nav-buttons">
+          <button class="nav-btn" onclick="moveSlider(-1)">
+            <svg viewBox="0 0 24 24">
+              <path d="M19 12H5M5 12L12 19M5 12L12 5" />
+            </svg>
+          </button>
+          <button class="nav-btn" onclick="moveSlider(1)">
+            <svg viewBox="0 0 24 24">
+              <path d="M5 12H19M19 12L12 5M19 12L12 19" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const track = document.getElementById("track");
+      const progress = document.getElementById("progress");
+      let currentIdx = 0;
+      const totalSlides = document.querySelectorAll(".shard-card").length;
+
+      let isDragging = false;
+      let startPos = 0;
+      let currentTranslate = 0;
+      let prevTranslate = 0;
+      let animationID = 0;
+
+      function updateSlider() {
+        const slideWidth =
+          document.querySelector(".shard-card").offsetWidth + 32;
+        const maxTranslate = (totalSlides - 1) * slideWidth;
+
+        // Limit index
+        if (currentIdx < 0) currentIdx = 0;
+        if (currentIdx >= totalSlides) currentIdx = totalSlides - 1;
+
+        currentTranslate = currentIdx * -slideWidth;
+        prevTranslate = currentTranslate;
+
+        track.style.transform = `translateX(${currentTranslate}px)`;
+
+        // Update progress bar
+        const progressPercentage = ((currentIdx + 1) / totalSlides) * 100;
+        progress.style.width = `${progressPercentage}%`;
+      }
+
+      function moveSlider(dir) {
+        currentIdx += dir;
+        updateSlider();
+      }
+
+      // Mouse & Touch Interaction
+      track.addEventListener("mousedown", dragStart);
+      track.addEventListener("touchstart", dragStart);
+      track.addEventListener("mouseup", dragEnd);
+      track.addEventListener("touchend", dragEnd);
+      track.addEventListener("mousemove", dragAction);
+      track.addEventListener("touchmove", dragAction);
+      track.addEventListener("mouseleave", dragEnd);
+
+      function dragStart(e) {
+        isDragging = true;
+        startPos = getPositionX(e);
+        animationID = requestAnimationFrame(animation);
+        track.style.transition = "none";
+      }
+
+      function dragAction(e) {
+        if (isDragging) {
+          const currentPosition = getPositionX(e);
+          currentTranslate = prevTranslate + currentPosition - startPos;
+        }
+      }
+
+      function dragEnd() {
+        isDragging = false;
+        cancelAnimationFrame(animationID);
+
+        const movedBy = currentTranslate - prevTranslate;
+        track.style.transition =
+          "transform 0.8s cubic-bezier(0.23, 1, 0.32, 1)";
+
+        if (movedBy < -100 && currentIdx < totalSlides - 1) currentIdx += 1;
+        if (movedBy > 100 && currentIdx > 0) currentIdx -= 1;
+
+        updateSlider();
+      }
+
+      function getPositionX(e) {
+        return e.type.includes("mouse") ? e.pageX : e.touches[0].clientX;
+      }
+
+      function animation() {
+        track.style.transform = `translateX(${currentTranslate}px)`;
+        if (isDragging) requestAnimationFrame(animation);
+      }
+
+      // Responsive Resizing
+      window.addEventListener("resize", updateSlider);
+
+      // Init
+      updateSlider();
+    </script>
+  </body>
+</html>
