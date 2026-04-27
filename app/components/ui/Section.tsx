@@ -10,7 +10,7 @@ export default function Section({
   return (
     <section
       className={cn(
-        "relative w-full overflow-hidden py-24 px-(--container-padding)",
+        "relative w-full overflow-hidden px-(--container-padding)",
         className
       )}
     >

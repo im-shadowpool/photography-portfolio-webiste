@@ -4,11 +4,12 @@ import "./Button.css";
 type ButtonProps = {
   content: string;
   path: string;
+  className?: string;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
-export default function Button({ content, path }: ButtonProps) {
+export default function Button({ content, path, className }: ButtonProps) {
   return (
-    <Link href={path}>
+    <Link href={path} className={className}>
       <button className="rerom-button">
         <span className="fill" />
         <span className="label">{content}</span>

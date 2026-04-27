@@ -67,14 +67,14 @@ export default function StickyCards() {
 
   useGSAP(
     () => {
-      const stickyCards = document.querySelectorAll(".sticky-card");
+     const stickyCards = gsap.utils.toArray(".sticky-card");
       stickyCards.forEach((card, index) => {
         if (index < stickyCards.length - 1) {
           ScrollTrigger.create({
             trigger: card,
-            start: "top top",
+            start: "top top+=46",
             endTrigger: stickyCards[stickyCards.length - 1],
-            end: "120%",
+            end: "100%",
             pin: true,
             pinSpacing: false,
           });
@@ -110,12 +110,12 @@ export default function StickyCards() {
             className={cn(
               `sticky-card sticky-card-${index + 1} ${
                 card.colorbg
-              } p-8 flex border-rounded-xl justify-between gap-4`
+              } p-12 flex border-rounded-xl justify-between gap-16`
             )}
             data-index={index}
             key={card.id}
           >
-            <div className="sticky-card-first w-[70%] flex flex-col justify-between gap-4">
+            <div  className="sticky-card-first w-[700px] flex flex-col flex-none justify-between gap-4">
               <div className="sticky-card-header flex flex-col gap-4 items-start">
                 <span className="py-1.5 px-2.5 bg-white border-rounded-xs">
                   {card.subTitle}
@@ -128,10 +128,9 @@ export default function StickyCards() {
                 <Button content={card.buttonText} path={card.buttonPath} />
               </div>
             </div>
-            <div className="sticky-card-second w-[20%] flex flex-col items-end justify-between">
-              <div className="flex justify-end items-end gap-4">
+            <div className="sticky-card-second w-full flex flex-col items-end justify-between">
                 <span>{`0${index + 1}`}</span>
-              </div>
+              
               <div
                 className="sticky-card-image border-rounded-lg"
                 style={{ backgroundImage: `url(${card.image})` }}

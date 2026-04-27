@@ -40,7 +40,13 @@ export default function Footer() {
         <Container className="post-footer">
           <div className="post-footer-1">
             <div className="f-col-1">
-              <img src="/logos/logo.svg" alt="Logo" />
+             <img
+              src="/logos/logo.svg"
+              alt="Logo"
+              className="w-[300px] h-10 object-cover"
+              width={300}
+              height={45}
+            />
               <p>
                 We supply a wide range of food, produce, and custom packaging
                 from ready-to-order items to fully bespoke branded solutions and

@@ -21,7 +21,7 @@ export default function ResultsCards() {
 
     // helper → controlled randomness
     const getRandomState = () => ({
-      x: gsap.utils.random(-24, 24),
+      x: gsap.utils.random(-32, 32),
       r: gsap.utils.random(-6, 6),
     });
 
@@ -93,7 +93,7 @@ export default function ResultsCards() {
   return (
     <div
       ref={containerRef}
-      className="results-container relative flex w-full justify-center p-8"
+      className="results-container relative flex w-full justify-center"
     >
       <div className="results-card aspect-[4.8/6.2] w-[36rem] rounded-[2em] relative overflow-hidden will-change-transform cursor-pointer bg-[#0d8dff]">
         <div className="results-content flex h-full flex-col justify-between p-8">
